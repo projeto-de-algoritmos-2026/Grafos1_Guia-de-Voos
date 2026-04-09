@@ -43,5 +43,6 @@ void criarAeroporto(Grafo *grafo, Aeroporto aeroporto);
 void criarVoo(Grafo *grafo, int origem, int destino, float peso);
 void criarVooBidirecional(Grafo *grafo, int origem, int destino, float peso);
 void imprimirGrafo(Grafo *grafo);
+float haversine(float lat1, float lon1, float lat2, float lon2);
 
 #endif

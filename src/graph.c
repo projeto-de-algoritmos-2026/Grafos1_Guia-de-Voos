@@ -1,6 +1,9 @@
 #include "graph.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
+
+#define RAIO_TERRA 6371.0
 
 Grafo *criarGrafo()
 {
@@ -62,4 +65,14 @@ void imprimirGrafo(Grafo *grafo)
             atual = atual->prox;
         }
     }
+}
+
+float haversine(float lat1, float lon1, float lat2, float lon2)
+{
+    float dlat = (lat2 - lat1) * M_PI / 180.0;
+    float dlon = (lon2 - lon1) * M_PI / 180.0;
+    float a = sin(dlat / 2) * sin(dlat / 2) +
+              cos(lat1 * M_PI / 180.0) * cos(lat2 * M_PI / 180.0) *
+                  sin(dlon / 2) * sin(dlon / 2);
+    return RAIO_TERRA * 2 * atan2(sqrt(a), sqrt(1 - a));
 }
