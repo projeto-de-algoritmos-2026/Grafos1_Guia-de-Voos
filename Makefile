@@ -1,6 +1,6 @@
 CC = gcc
-CFLAGS = -I include
-SRC = src/main.c
+CFLAGS = -I include -lm
+SRC = src/main.c src/graph.c
 OUT = main
 
 all:
