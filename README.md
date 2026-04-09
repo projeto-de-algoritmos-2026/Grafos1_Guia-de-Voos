@@ -1,6 +1,6 @@
-# Grafos1_Nome-a-definir
+# Grafos1_Guia-de-Voos
 
-# NomedoProjeto
+# Guia de Voos
 
 Número da Lista: 60<br>
 Conteúdo da Disciplina: Grafos 1 <br>
@@ -11,7 +11,11 @@ Conteúdo da Disciplina: Grafos 1 <br>
 | 22/1008211  | Jose Oliveira |
 
 ## Sobre 
-Descreva os objetivos do seu projeto e como ele funciona. 
+O projeto tem como objetivo popular um grande grafo esparso com dados reais 
+de aeroportos e rotas aéreas, permitindo a análise de conexões, distâncias 
+e rotas entre aeroportos com a utilização dos algoritmos vistos em sala de aula:
+BFS (menor número de escalas), Dijkstra (menor distância), 
+Tarjan (componentes fortemente conectados) e busca de caminho mais longo simples.
 
 ## Screenshots
 Adicione 3 ou mais screenshots do projeto em funcionamento.
