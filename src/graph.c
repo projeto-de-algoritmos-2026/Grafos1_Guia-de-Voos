@@ -43,7 +43,7 @@ void criarVoo(Grafo *grafo, int origem, int destino, float peso)
         grafo->cabecas[origem].fim->prox = novoVoo;
         grafo->cabecas[origem].fim = novoVoo;
     }
-
+    grafo->cabecas[origem].tamanho++;
     grafo->numArestas++;
 }
 

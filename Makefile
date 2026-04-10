@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -I include -lm
-SRC = src/main.c src/graph.c src/parser.c
+SRC = src/main.c src/graph.c src/parser.c src/bfs.c src/dfs.c
 OUT = main
 
 all:

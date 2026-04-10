@@ -5,5 +5,6 @@
 
 void carregarAeroportos(Grafo *grafo, const char *caminho);
 void carregarRotas(Grafo *grafo, const char *caminho);
+int buscarHash(const char *iata);
 
 #endif
