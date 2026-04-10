@@ -4,6 +4,7 @@
 #include "parser.h"
 #include "bfs.h"
 #include "dfs.h"
+#include "dijkstra.h"
 
 int main()
 {
@@ -37,6 +38,19 @@ int main()
     printf("Caminho BSB -> YPO (%d escalas):\n", tam - 1);
     for (int i = tam - 1; i >= 0; i--)
         printf("%s ", grafo->aeroportos[cam[i]].iata);
+    printf("\n");
+
+    float distancia = 0;
+    int *antDijkstra = dijkstra(grafo, "BSB", "YPO", &distancia);
+    int tamDijkstra = 0;
+    int *camDijkstra = reconstruirCaminho(grafo, antDijkstra, "YPO", &tamDijkstra);
+
+    float distanciaBFS = calcularDistanciaCaminho(grafo, cam, tam);
+    printf("BFS:      %d escalas, %.0f km\n", tam - 1, distanciaBFS);
+
+    printf("Dijkstra BSB -> YPO (%d escalas, %.0f km):\n", tamDijkstra - 1, distancia);
+    for (int i = tamDijkstra - 1; i >= 0; i--)
+        printf("%s ", grafo->aeroportos[camDijkstra[i]].iata);
     printf("\n");
 
     // roda a bfs 6074 vezes pra encontrar o mais isolado saindo de brasilia

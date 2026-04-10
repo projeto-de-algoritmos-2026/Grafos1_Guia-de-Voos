@@ -76,3 +76,24 @@ float haversine(float lat1, float lon1, float lat2, float lon2)
                   sin(dlon / 2) * sin(dlon / 2);
     return RAIO_TERRA * 2 * atan2(sqrt(a), sqrt(1 - a));
 }
+
+float calcularDistanciaCaminho(Grafo *grafo, int *caminho, int tamanho)
+{
+    float total = 0;
+    for (int i = tamanho - 1; i > 0; i--)
+    {
+        int de = caminho[i];
+        int para = caminho[i - 1];
+        No *aux = grafo->cabecas[de].inicio;
+        while (aux != NULL)
+        {
+            if (aux->indice == para)
+            {
+                total += aux->peso;
+                break;
+            }
+            aux = aux->prox;
+        }
+    }
+    return total;
+}

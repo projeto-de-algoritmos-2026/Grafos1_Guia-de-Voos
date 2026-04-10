@@ -44,5 +44,6 @@ void criarVoo(Grafo *grafo, int origem, int destino, float peso);
 void criarVooBidirecional(Grafo *grafo, int origem, int destino, float peso);
 void imprimirGrafo(Grafo *grafo);
 float haversine(float lat1, float lon1, float lat2, float lon2);
+float calcularDistanciaCaminho(Grafo *grafo, int *caminho, int tamanho);
 
 #endif

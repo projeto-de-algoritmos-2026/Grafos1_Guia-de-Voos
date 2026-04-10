@@ -1,6 +1,5 @@
 #ifndef BFS_H
 #define BFS_H
-#endif
 
 #include "graph.h"
 
@@ -23,3 +22,5 @@ int filaVazia(Fila *fila);
 Grafo *bfs(Grafo *grafo);
 int *bfsMenorCaminho(Grafo *grafo, const char *origemIata, const char *destinoIata);
 int *reconstruirCaminho(Grafo *grafo, int *anterior, const char *destinoIata, int *tamanho);
+
+#endif
