@@ -265,6 +265,24 @@ enum MHD_Result handler(void *cls, struct MHD_Connection *connection,
         return rotaComparativo(connection);
     if (strcmp(url, "/scc") == 0)
         return rotaSCC(connection);
+    if (strcmp(url, "/") == 0)
+    {
+        FILE *f = fopen("../frontend/index.html", "r");
+        fseek(f, 0, SEEK_END);
+        long size = ftell(f);
+        rewind(f);
+        char *html = malloc(size + 1);
+        fread(html, 1, size, f);
+        html[size] = '\0';
+        fclose(f);
+
+        struct MHD_Response *response = MHD_create_response_from_buffer(
+            size, html, MHD_RESPMEM_MUST_FREE);
+        MHD_add_response_header(response, "Content-Type", "text/html");
+        enum MHD_Result ret = MHD_queue_response(connection, MHD_HTTP_OK, response);
+        MHD_destroy_response(response);
+        return ret;
+    }
 
     return responderJSON(connection, "{\"erro\":\"rota nao encontrada\"}", MHD_HTTP_NOT_FOUND);
 }

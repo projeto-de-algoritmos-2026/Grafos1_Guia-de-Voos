@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Rotas Aéreas</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: monospace;
+            background: #0f0f0f;
+            color: #e0e0e0;
+            min-height: 100vh;
+        }
+
+        header {
+            text-align: center;
+            padding: 2rem;
+            border-bottom: 1px solid #333;
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+            letter-spacing: 0.1em;
+        }
+
+        header p {
+            color: #888;
+            margin-top: 0.4rem;
+            font-size: 0.85rem;
+        }
+
+        main {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .inputs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            align-items: flex-end;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .field label {
+            font-size: 0.75rem;
+            color: #888;
+            text-transform: uppercase;
+        }
+
+        input {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            color: #e0e0e0;
+            padding: 0.5rem 0.8rem;
+            font-family: monospace;
+            font-size: 1rem;
+            width: 100px;
+            text-transform: uppercase;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #666;
+        }
+
+        .botoes {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+
+        button {
+            background: #1a1a1a;
+            border: 1px solid #444;
+            color: #e0e0e0;
+            padding: 0.5rem 1rem;
+            font-family: monospace;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+
+        button:hover {
+            border-color: #aaa;
+        }
+
+        button:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .secao {
+            margin-bottom: 2rem;
+        }
+
+        .secao h2 {
+            font-size: 0.8rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.8rem;
+            border-bottom: 1px solid #222;
+            padding-bottom: 0.4rem;
+        }
+
+        .card {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            padding: 1rem;
+        }
+
+        .card .rota {
+            font-size: 1rem;
+            margin-bottom: 0.6rem;
+            word-break: break-all;
+        }
+
+        .card .meta {
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .card .meta span {
+            color: #e0e0e0;
+        }
+
+        .comparativo {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .comparativo .card h3 {
+            font-size: 0.75rem;
+            color: #888;
+            text-transform: uppercase;
+            margin-bottom: 0.6rem;
+        }
+
+        .economia {
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            color: #888;
+            border-top: 1px solid #222;
+            padding-top: 0.8rem;
+        }
+
+        .economia span {
+            color: #7ec8a0;
+        }
+
+        .erro {
+            color: #e07070;
+            font-size: 0.85rem;
+            padding: 0.5rem 0;
+        }
+
+        .loading {
+            color: #888;
+            font-size: 0.85rem;
+            padding: 0.5rem 0;
+        }
+
+        .aeroporto {
+            display: inline;
+        }
+
+        .seta {
+            color: #555;
+            margin: 0 0.3rem;
+        }
+
+        .scc-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+        }
+
+        .scc-item {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            padding: 0.8rem;
+            font-size: 0.85rem;
+        }
+
+        .scc-item .valor {
+            font-size: 1.2rem;
+            display: block;
+            margin-bottom: 0.2rem;
+        }
+
+        .scc-item .label {
+            color: #888;
+            font-size: 0.75rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>SISTEMA DE ROTAS AÉREAS</h1>
+        <p>Universidade de Brasília — Grafos 1</p>
+    </header>
+
+    <main>
+
+        <div class="inputs">
+            <div class="field">
+                <label>Origem</label>
+                <input type="text" id="origem" maxlength="3" placeholder="BSB">
+            </div>
+            <div class="field">
+                <label>Destino</label>
+                <input type="text" id="destino" maxlength="3" placeholder="HND">
+            </div>
+        </div>
+
+        <div class="botoes">
+            <button onclick="rodarBFS()">BFS — Menos Escalas</button>
+            <button onclick="rodarDijkstra()">Dijkstra — Menor Distância</button>
+            <button onclick="rodarComparativo()">Comparativo BFS vs Dijkstra</button>
+            <button onclick="rodarSCC()">Kosaraju — SCCs</button>
+            <button onclick="rodarInfo()">Info do Grafo</button>
+        </div>
+
+        <div id="resultado"></div>
+
+    </main>
+
+    <script>
+        const API = 'http://localhost:8080';
+
+        function getInputs() {
+            return {
+                origem: document.getElementById('origem').value.toUpperCase().trim(),
+                destino: document.getElementById('destino').value.toUpperCase().trim()
+            };
+        }
+
+        function setResultado(html) {
+            document.getElementById('resultado').innerHTML = html;
+        }
+
+        function loading() {
+            setResultado('<p class="loading">Consultando...</p>');
+        }
+
+        function erro(msg) {
+            setResultado(`<p class="erro">Erro: ${msg}</p>`);
+        }
+
+        function renderRota(caminho) {
+            return caminho.map((a, i) =>
+                `<span class="aeroporto" title="${a.nome}">${a.iata}</span>${i < caminho.length - 1 ? '<span class="seta">→</span>' : ''}`
+            ).join('');
+        }
+
+        function renderCard(titulo, dados) {
+            return `
+            <div class="card">
+                ${titulo ? `<h3>${titulo}</h3>` : ''}
+                <div class="rota">${renderRota(dados.caminho)}</div>
+                <div class="meta">
+                    Escalas: <span>${dados.escalas}</span> &nbsp;|&nbsp;
+                    Distância: <span>${Number(dados.distancia).toLocaleString()} km</span>
+                </div>
+            </div>`;
+        }
+
+        async function rodarBFS() {
+            const { origem, destino } = getInputs();
+            if (!origem || !destino) return erro('preencha origem e destino');
+            loading();
+            try {
+                const res = await fetch(`${API}/bfs?origem=${origem}&destino=${destino}`);
+                const data = await res.json();
+                if (data.erro) return erro(data.erro);
+                setResultado(`
+                <div class="secao">
+                    <h2>BFS — Menor número de escalas</h2>
+                    ${renderCard('', data)}
+                </div>`);
+            } catch (e) { erro('servidor inacessível'); }
+        }
+
+        async function rodarDijkstra() {
+            const { origem, destino } = getInputs();
+            if (!origem || !destino) return erro('preencha origem e destino');
+            loading();
+            try {
+                const res = await fetch(`${API}/dijkstra?origem=${origem}&destino=${destino}`);
+                const data = await res.json();
+                if (data.erro) return erro(data.erro);
+                setResultado(`
+                <div class="secao">
+                    <h2>Dijkstra — Menor distância</h2>
+                    ${renderCard('', data)}
+                </div>`);
+            } catch (e) { erro('servidor inacessível'); }
+        }
+
+        async function rodarComparativo() {
+            const { origem, destino } = getInputs();
+            if (!origem || !destino) return erro('preencha origem e destino');
+            loading();
+            try {
+                const res = await fetch(`${API}/comparativo?origem=${origem}&destino=${destino}`);
+                const data = await res.json();
+                if (data.erro) return erro(data.erro);
+                setResultado(`
+                <div class="secao">
+                    <h2>Comparativo BFS vs Dijkstra</h2>
+                    <div class="comparativo">
+                        ${renderCard('BFS — menos escalas', data.bfs)}
+                        ${renderCard('Dijkstra — menor distância', data.dijkstra)}
+                    </div>
+                    <div class="economia">
+                        Dijkstra economizou <span>${Number(data.economiaKm).toLocaleString()} km</span>
+                        &nbsp;|&nbsp;
+                        BFS economizou <span>${data.economiaEscalas} escala(s)</span>
+                    </div>
+                </div>`);
+            } catch (e) { erro('servidor inacessível'); }
+        }
+
+        async function rodarSCC() {
+            loading();
+            try {
+                const res = await fetch(`${API}/scc`);
+                const data = await res.json();
+                if (data.erro) return erro(data.erro);
+                setResultado(`
+                <div class="secao">
+                    <h2>Kosaraju — Componentes Fortemente Conectados</h2>
+                    <div class="scc-grid">
+                        <div class="scc-item"><span class="valor">${data.total.toLocaleString()}</span><span class="label">Total de SCCs</span></div>
+                        <div class="scc-item"><span class="valor">${data.maiorComponente.toLocaleString()}</span><span class="label">Maior componente</span></div>
+                        <div class="scc-item"><span class="valor">${data.comMaisDe1.toLocaleString()}</span><span class="label">SCCs com 2+ aeroportos</span></div>
+                        <div class="scc-item"><span class="valor">${data.isolados.toLocaleString()}</span><span class="label">Aeroportos isolados</span></div>
+                    </div>
+                </div>`);
+            } catch (e) { erro('servidor inacessível'); }
+        }
+
+        async function rodarInfo() {
+            loading();
+            try {
+                const res = await fetch(`${API}/info`);
+                const data = await res.json();
+                if (data.erro) return erro(data.erro);
+                setResultado(`
+                <div class="secao">
+                    <h2>Informações do grafo</h2>
+                    <div class="scc-grid">
+                        <div class="scc-item"><span class="valor">${data.aeroportos.toLocaleString()}</span><span class="label">Aeroportos</span></div>
+                        <div class="scc-item"><span class="valor">${data.rotas.toLocaleString()}</span><span class="label">Rotas</span></div>
+                        <div class="scc-item"><span class="valor">${data.comRotas.toLocaleString()}</span><span class="label">Com rotas</span></div>
+                        <div class="scc-item"><span class="valor">${data.semRotas.toLocaleString()}</span><span class="label">Sem rotas</span></div>
+                    </div>
+                </div>`);
+            } catch (e) { erro('servidor inacessível'); }
+        }
+    </script>
+
+</body>
+
+</html>
