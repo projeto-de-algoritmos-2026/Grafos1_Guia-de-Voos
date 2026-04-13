@@ -18,17 +18,17 @@ BFS (menor número de escalas), Dijkstra (menor distância),
 Tarjan (componentes fortemente conectados) e busca de caminho mais longo simples.
 
 ## Screenshots
-![tela inicial](tela-inicial.png)
+![tela inicial](./assets/tela-inicial.png)
 ### Tela de inicial do projeto
-![opcao-bfs](opcao-bfs.png)
+![opcao-bfs](./assets/opcao-bfs.png)
 #### Tela de resultado da busca BFS (menor número de escalas)
-![opcao-dijkstra](opcao-dijkstra.png)
+![opcao-dijkstra](./assets/opcao-dijkstra.png)
 #### Tela de resultado da busca Dijkstra (menor distância)
-![comparativo](comparativo.png)
+![comparativo](./assets/comparativo.png)
 #### Comparativo entre as rotas encontradas por BFS e Dijkstra
-![kosaraju](kosaraju.png)
+![kosaraju](./assets/kosaraju.png)
 #### Componentes fortemente conectados no grafo
-![info](info.png)
+![info](./assets/info.png)
 #### Informações sobre o grafo
 
 ## Instalação 
