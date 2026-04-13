@@ -54,3 +54,6 @@ Instale o WSL2 (`wsl --install` no PowerShell como admin), abra o terminal Ubunt
 O dataset utilizado é o OpenFlights, contendo dados reais de aeroportos e rotas aéreas de todo o mundo. Os dados têm como base o ano de 2014 e podem conter rotas desativadas ou aeroportos sem operação atual. Após o parsing, o grafo é composto por 6074 aeroportos e 66607 rotas direcionadas. Os pesos das arestas são calculados em tempo de carregamento usando a fórmula de Haversine, que calcula a distância em km entre dois pontos geográficos na superfície da Terra a partir de suas coordenadas de latitude e longitude.
 
 O aeroporto mais isolado da rede a partir de Brasília é YPO (Peawanuck, Canadá), atingível em 8 escalas via BSB → MIA → YYZ → YTS → YMO → YFA → ZKE → YAT → YPO.
+
+## Apresentação
+Vídeo disponível em: https://youtu.be/32CoCvyaRlo
